@@ -36,7 +36,7 @@ To set up this project locally, follow these steps:
 
    ```bash
    git clone https://github.com/annlinprathisha/IT-Training-Website.git
-   cd ScopeIndiaClone
+   cd IT-Training-Website
 
 2. **Create a virtual environment:**
    python -m venv myenv
