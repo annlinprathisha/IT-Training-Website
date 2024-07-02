@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend Activation Link</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-top: 50px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-family: 'Lucida Sans Unicode';
+            font-size: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .form-check-label {
+            margin-left: 5px;
+        }
+
+        .links {
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% if success_message %}
+                <div class="alert alert-success text-center" id="success-message">{{ success_message }}</div>
+                {% endif %}
+                {% if error_message %}
+                <div class="alert alert-danger text-center" id="error-message">{{ error_message }}</div>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Resend Activation Link</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control"
+                                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Resend Link</button>
+                        </form>
+                        <div class="links text-center">
+                            <a href="{% url 'signin' %}">Back to Sign In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const emailInput = document.getElementById('email');
+            
+            emailInput.addEventListener('input', () => {
+                const errorMessage = document.getElementById('error-message');
+                const successMessage = document.getElementById('success-message');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+                if (successMessage) {
+                    successMessage.remove();
+                }
+            });
+        });
+    </script>
+</body>
+
+
+</html>

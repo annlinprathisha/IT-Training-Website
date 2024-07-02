@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <a class="navbar-brand" href="#" style="color: rgb(226, 146, 26);">Student Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item my-2 mx-2">
+                    <a href="{% url 'home' %}"><button class="btn btn-outline-primary">Home</button></a>
+                </li>
+                <li class="nav-item my-2 mx-2">
+                    <a href="{% url 'Detail' user.username %}">
+                        <button class="btn btn-outline-primary">Edit Profile</button>
+                    </a>
+                </li>
+                <li class="nav-item my-2 mx-2">
+                    <input id="searchCourses" class="form-control" type="search" placeholder="Search Courses">
+                </li>
+                <li class="nav-item my-2 mx-2">
+                    <a href="{% url 'ChangePassword' user.id %}">
+                        <button class="btn btn-outline-warning ">Change Password</button>
+                    </a>
+                </li>
+                <li class="nav-item my-2 mx-2">
+                    <a href="{% url 'signout' %}"><button class="btn btn-danger">Logout</button></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h2 class="container" style="color:blue;">Welcome {{ user_name }}!</h2>
+    <div class="container mt-5">
+        <div class="table-responsive">
+            {% for category, course_list in courses.items %}
+            <h2>{{ category }}</h2>
+            <table id="course-list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Duration</th>
+                        <th>Fees</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in course_list %}
+                    <tr>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.duration }}</td>
+                        <td>{{ course.fees }}</td>
+                        <td>
+                            <form method="post" action="{% url 'save_selected_courses' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="course_name" value="{{ course.name }}">
+                                <button type="submit" class="btn btn-primary sign-up-btn">Sign Up</button>
+                            </form>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+        <h3>Your Signed Up Courses Here!</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in signed_up_courses %}
+                <tr>
+                    <td>{{ course.name }}</td>
+                    <td>
+                        <button class="btn btn-danger delete-btn" data-course="{{ course.name }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').click(function () {
+                var courseName = $(this).data('course');
+                console.log('Delete button clicked for course:', courseName);
+                $.ajax({
+                    url: "{% url 'delete_selected_course' %}",
+                    type: "POST",
+                    data: {
+                        course_name: courseName,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            console.error('Error:', data.error);
+
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', textStatus);
+                    }
+                });
+            });
+            $('#searchCourses').on('keyup', function () {
+                var value = $(this).val().toLowerCase();
+                $('#course-list tbody tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+    </script>
+
+
+</body>
+
+</html>

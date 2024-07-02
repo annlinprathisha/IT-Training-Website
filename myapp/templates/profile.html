@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #a8baeb;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .profile-photo {
+            border: 2px solid navy;
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            border-color: navy;
+            background-color: #2b158f;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: transparent;
+            font-weight: bolder;
+        }
+        label {
+            font-weight: bold;
+            color:rgb(112, 17, 73);
+        }
+        input[type="checkbox"] + label,
+        input[type="radio"] + label {
+            color: rgb(134, 116, 168); 
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"] {
+            color: rgb(153, 30, 126); 
+        }
+        h2{
+            color:rgb(112, 12, 90);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5 p-4">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'home' %}"><button class="btn btn-custom mr-2">Home</button></a>
+            <a href="{% url 'course_list' %}"><button class="btn btn-custom">Dashboard</button></a>
+        </div>
+        <h2 class="text-center my-4">Welcome {{detail.user}}!</h2>
+        <div class="text-center mb-4">
+            {% if detail.upload_avatar %}
+                <img src="{{ detail.upload_avatar.url }}" class="rounded-circle profile-photo" alt="Profile Photo" height="180px" width="180px">
+            {% else %}
+                <img src="{% static 'images/avatar.jpeg' %}" class="rounded-circle profile-photo" alt="Profile Photo" height="180px" width="180px">
+            {% endif %}
+        </div>
+        <form>
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" value="{{detail.full_name}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="dob">DOB</label>
+                    <input type="date" class="form-control" id="dob" value="{{ detail.date_of_birth|date:'Y-m-d' }}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="mb-2">Gender</label><br>
+                    
+                        <input type="radio" name="gender" id="genderMale" value="Male" {% if detail.gender == "male" %}checked{% endif %} disabled>
+                        <label for="genderMale">Male</label>
+                   
+                    
+                        <input type="radio" name="gender" id="genderFemale" value="Female" {% if detail.gender == "female" %}checked{% endif %} disabled>
+                        <label for="genderFemale">Female</label>
+                    
+                    
+                        <input type="radio" name="gender" id="genderOther" value="Other" {% if detail.gender == "other" %}checked{% endif %} disabled>
+                        <label for="genderOther">Other</label>
+                   
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="mb-2">Training Mode</label><br>
+                    <input type="radio" id="online" name="mode" value="Live online" {% if detail.training_mode == "Live online" %}checked{% endif %} disabled>
+                    <label for="online">Live online</label>
+                    <input type="radio" id="offline" name="mode" value="Classroom" {% if detail.training_mode == "Classroom" %}checked{% endif %} disabled>
+                    <label for="offline">Classroom</label>
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="education">Educational Qualification</label>
+                    <input type="text" class="form-control" id="education" value="{{detail.educational_qualification}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="{{detail.email}}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="number" class="form-control" id="mobile" value="{{detail.mobile_number}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" value="{{detail.address}}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" value="{{detail.city}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="guardianName">Guardian Name</label>
+                    <input type="text" class="form-control" id="guardianName" value="{{detail.guardians_name}}" disabled>
+                </div>
+                
+                
+            </div>
+            <div class="form-row">
+                
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="guardianMobile">Guardian Mobile</label>
+                    <input type="number" class="form-control" id="guardianMobile" value="{{detail.guardians_mobile}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="guardianOccupation">Guardian Occupation</label>
+                    <input type="text" class="form-control" id="guardianOccupation" value="{{detail.guardians_occupation}}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="mb-2">Hobbies</label><br>
+                    <input type="checkbox" id="cycling" name="hobbies" value="cycling" {% if 'cycling' in detail.hobbies_list %}checked{% endif %} disabled>
+                    <label for="cycling">Cycling</label><br>
+                    <input type="checkbox" id="gardening" name="hobbies" value="gardening" {% if 'gardening' in detail.hobbies_list %}checked{% endif %} disabled>
+                    <label for="gardening">Gardening</label><br>
+                    <input type="checkbox" id="cooking" name="hobbies" value="cooking" {% if 'cooking' in detail.hobbies_list %}checked{% endif %} disabled>
+                    <label for="cooking">Cooking</label><br>
+                    <input type="checkbox" id="knitting" name="hobbies" value="knitting" {% if 'knitting' in detail.hobbies_list %}checked{% endif %} disabled>
+                    <label for="knitting">Knitting</label>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="mb-2">SCOPE INDIA Location</label><br>
+                    <input type="radio" id="technopark" name="location" value="Technopark TVM" {% if detail.location == "Technopark TVM" %}checked{% endif %} disabled>
+                    <label for="technopark">Technopark TVM</label><br>
+                    <input type="radio" id="thampanoor" name="location" value="Thampanoor TVM" {% if detail.location == "Thampanoor TVM" %}checked{% endif %} disabled>
+                    <label for="thampanoor">Thampanoor TVM</label><br>
+                    <input type="radio" id="kochi" name="location" value="Kochi" {% if detail.location == "Kochi" %}checked{% endif %} disabled>
+                    <label for="kochi">Kochi</label><br>
+                    <input type="radio" id="ngl" name="location" value="Nagercoil" {% if detail.location == "Nagercoil" %}checked{% endif %} disabled>
+                    <label for="ngl">Nagercoil</label>
+                    <input type="radio" id="on" name="location" value="Online" {% if detail.location == "Online" %}checked{% endif %} disabled>
+                    <label for="on">Online</label>
+                </div>
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country" value="{{detail.country}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" id="state" value="{{detail.state}}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                
+                <div class="form-group col-md-6">
+                    <label for="zipCode">Pin/Zip Code</label>
+                    <input type="text" class="form-control" id="zipCode" value="{{detail.pin_zip_code}}" disabled>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{% url 'update' detail.pk %}">
+                    <button type="button" class="btn btn-custom">Edit Profile</button>
+                </a>
+            </div>
+       </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-secondary mr-2">Change Password</button>
+            <button class="btn btn-secondary">Logout</button>
+        </div>
+        <h2 class="text-center my-4">Welcome {{detail.user}}!</h2>
+        <div class="text-center mb-4">
+        {% if detail.upload_avatar %}
+            <img src="{{ detail.upload_avatar.url }}" class="rounded" alt="Profile Photo" height="180px" width="180px" style="border: 2px solid navy;">
+        {% else %}
+            <img src="{% static 'images/avatar.jpeg' %}" class="rounded" alt="Profile Photo" height="300px" width="300px">
+        {% endif %}
+        </div>
+        <form>
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" value="{{detail.full_name}}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="dob">DOB</label>
+                    <input type="date" class="form-control" id="dob" value="{{ detail.date_of_birth|date:'Y-m-d' }}">
+                </div>
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="gender">Gender</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" id="genderMale" value="Male" {% if detail.gender == "male" %}checked{% endif %}>
+                <label class="form-check-label" for="genderMale">Male</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="Female" {% if detail.gender == "female" %}checked{% endif %}>
+                <label class="form-check-label" for="genderFemale">Female</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="gender" id="genderOther" value="Other" {% if detail.gender == "other" %}checked{% endif %}>
+                <label class="form-check-label" for="genderOther">Other</label>
+            </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="education">Educational Qualification</label>
+                    <input type="text" class="form-control" id="education" value="{{detail.educational_qualification}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="number" class="form-control" id="mobile" value="{{detail.mobile_number}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="{{detail.email}}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="guardianMobile">Guardian Mobile</label>
+                    <input type="number" class="form-control" id="guardianMobile" value="{{detail.guardians_mobile}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="mb-2">Training Mode</label><br>
+                    <input type="radio" required id="online" name="mode" value="Live online" {% if detail.training_mode == "Live online" %}checked{% endif %}>
+                    <label for="online">Live online</label>
+                    <input type="radio" id="offline" name="mode" value="Classroom" {% if detail.training_mode == "Classroom" %}checked{% endif %}>
+                    <label for="offline" class="mb-3">Classroom</label>
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label class="mb-2">SCOPE INDIA Location</label><br>
+                    <input type="radio" required id="technopark" name="location" value="Technopark TVM" {% if detail.location == "Technopark TVM" %}checked{% endif %}>
+                    <label for="technopark">Technopark TVM</label>
+                    <input type="radio" id="thampanoor" name="location" value="Thampanoor TVM" {% if detail.location == "Thampanoor TVM" %}checked{% endif %}>
+                    <label for="thampanoor">Thampanoor TVM</label>
+                    <input type="radio" id="kochi" name="location" value="Kochi" {% if detail.location == "Kochi" %}checked{% endif %}>
+                    <label for="kochi">Kochi</label><br>
+                    <input type="radio" id="ngl" name="location" value="Nagercoil" {% if detail.location == "Nagercoil" %}checked{% endif %}>
+                    <label for="ngl">Nagercoil</label>
+                    <input type="radio" id="on" name="location" value="Online" {% if detail.location == "Online" %}checked{% endif %}>
+                    <label for="on">Online</label>
+                </div>
+                
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="guardianName">Guardian Name</label>
+                    <input type="text" class="form-control" id="guardianName" value="{{detail.guardians_name}}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="guardianOccupation">Guardian Occupation</label>
+                    <input type="text" class="form-control" id="guardianOccupation"
+                        value="{{detail.guardians_occupation}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="mb-2">Hobbies</label><br>
+                    <input type="checkbox" id="cycling" name="hobbies" value="cycling" {% if 'cycling' in detail.hobbies_list %}checked{% endif %}>
+                    <label for="cycling">Cycling</label><br>
+                    <input type="checkbox" id="gardening" name="hobbies" value="gardening" {% if 'gardening' in detail.hobbies_list %}checked{% endif %}>
+                    <label for="gardening">Gardening</label><br>
+                    <input type="checkbox" id="cooking" name="hobbies" value="cooking" {% if 'cooking' in detail.hobbies_list %}checked{% endif %}>
+                    <label for="cooking">Cooking</label><br>
+                    <input type="checkbox" id="knitting" name="hobbies" value="knitting" {% if 'knitting' in detail.hobbies_list %}checked{% endif %}>
+                    <label for="knitting" class="mb-4">Knitting</label><br>
+                </div>
+                
+                
+                <div class="form-group col-md-6">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" value="{{detail.address}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country" value="{{detail.country}}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" id="state" value="{{detail.state}}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" value="{{detail.city}}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="zipCode">Pin/Zip Code</label>
+                    <input type="text" class="form-control" id="zipCode" value="{{detail.pin_zip_code}}">
+                </div>
+            </div>
+            <a href="{% url 'update' detail.pk %}">
+                <button type="button" class="btn btn-secondary">Edit Profile</button>
+            </a>
+            
+       </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html> -->

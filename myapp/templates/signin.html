@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-top: 50px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-family: 'Lucida Sans Unicode';
+            font-size: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .form-check-label {
+            margin-left: 5px;
+        }
+
+        .links {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {% if success_message %}
+                <div class="alert alert-success text-center" id="alert" role="alert">
+                    {{ success_message }}
+                </div>
+                {% endif %}
+                {% if error_message %}
+                <div class="alert alert-danger text-center" id="alert" role="alert">
+                    {{ error_message|safe }}
+                </div>
+                {% endif %}
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Sign In</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control"
+                                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+                                {% if errors.email %}
+                                <div class="error-message" style="color: red;" id="email-error">{{ errors.email }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password" class="form-control">
+                                {% if errors.password %}
+                                <div class="error-message" style="color: red;" id="password-error">{{ errors.password }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" name="logged" id="logged" class="form-check-input">
+                                <label for="logged" class="form-check-label">Keep me logged in</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                        <div class="links text-center">
+                            <a href="{% url 'first_login' %}">First Login?</a>
+                            <a href="{% url 'forgot_password' %}">Forgot Password?</a><br>
+                            <a href="{% url 'home' %}">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            emailInput.addEventListener('input', () => {
+                const emailError = document.getElementById('email-error');
+                if (emailError) {
+                    emailError.remove();
+                }
+            });
+
+            passwordInput.addEventListener('input', () => {
+                const passwordError = document.getElementById('password-error');
+                if (passwordError) {
+                    passwordError.remove();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

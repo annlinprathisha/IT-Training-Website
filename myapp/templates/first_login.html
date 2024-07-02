@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Login</title>
+   
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            font-family: 'Lucida Sans Unicode';
+            font-size: 20px;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        h4{
+            text-align: center;
+        }
+        .error {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">First Login</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="">
+                            {% csrf_token %}
+    
+                            {{ form.non_field_errors }}
+        
+                            <div class="mb-4">
+                                <label for="{{ form.username.id_for_label }}">Username:</label>
+                                {{ form.username }}
+                                {% for error in form.username.errors %}
+                                    <div class="error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                    
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}">Email:</label>
+                                {{ form.email }}
+                                {% for error in form.email.errors %}
+                                    <div class="error alert alert-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                    
+                            <button type="submit" class="btn btn-success btn-block mb-3">Send Temporary Password</button>
+                        </form>
+                        <div class="links text-center">
+                            <a class ="text-success" href="{% url 'home' %}">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+       document.addEventListener('DOMContentLoaded', function () {
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(function (input) {
+                input.addEventListener('input', function () {
+                    var error = this.parentElement.querySelector('.error');
+                    if (error) {
+                        error.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
