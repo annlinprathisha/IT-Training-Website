@@ -73,6 +73,11 @@ Once the development server is running, you can:
 Visit the main site: Navigate to http://127.0.0.1:8000/ to explore the features.
 Access the admin panel: Visit http://127.0.0.1:8000/admin/ and log in with the superuser credentials to manage content.
 
+## Demo Video Link
+
+This demo video provides an overview of the application, including key features, user flow, and functionality.
+https://github.com/user-attachments/assets/07a6202f-fddb-4b57-93e6-9a576ebcb416
+
 # Contact
 
 For any questions or suggestions, feel free to reach out:
